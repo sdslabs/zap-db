@@ -29,34 +29,40 @@ const prodOpts = {
 
 let proc;
 
-const bundle = async (opts) => {
+const bundle = async (opts, startServer) => {
 	const bundler = new Bundler(entryFile, opts);
 
 	bundler.on("buildError", (error) => {
 		throw error;
 	});
 
-	bundler.on("buildEnd", () => {
-		console.log(); // Leave extra line after build
-		const out = Path.join(opts.outDir, opts.outFile);
-		proc = spawn("node", [out], { stdio: "inherit" });
-	});
+	if (startServer) {
+		bundler.on("buildEnd", () => {
+			console.log(); // Leave extra line after build
+			const out = Path.join(opts.outDir, opts.outFile);
+			proc = spawn("node", [out], { stdio: "inherit" });
+		});
 
-	bundler.on("buildStart", () => {
-		if (proc) {
-			proc.kill("SIGINT");
-		}
-	});
+		bundler.on("buildStart", () => {
+			if (proc) {
+				proc.kill("SIGINT");
+			}
+		});
+	}
 
 	await bundler.bundle();
 };
 
 const start = async () => {
-	await bundle(prodOpts);
+	await bundle(prodOpts, true);
 };
 
 const watch = async () => {
-	await bundle(devOpts);
+	await bundle(devOpts, true);
 };
 
-module.exports = { start, watch };
+const build = async () => {
+	await bundle(prodOpts, false);
+};
+
+module.exports = { start, watch, build };
