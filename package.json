@@ -14,7 +14,6 @@
 		"watch-node": "nodemon dist/src/index.js",
 		"lint": "eslint scripts/**/* src/**/*",
 		"format": "eslint --fix scripts/**/* src/**/*",
-		"random": "node scripts/random.js",
 		"hash": "node scripts/hash.js",
 		"test": "npm run lint"
 	},

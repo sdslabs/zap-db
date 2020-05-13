@@ -10,8 +10,8 @@ export interface Config {
 	// Port to run the application on
 	port: Number,
 
-	// Secret of the app to sign tokens with
-	secret: String,
+	// JSON file to store the tokens in
+	session: string,
 
 	// sha256 of the password for admin
 	password: String,
@@ -28,7 +28,7 @@ export default () => {
 	const appConfig: Config = {
 		debug: config.debug || false,
 		port: config.port || 3000,
-		secret: config.secret,
+		session: config.session,
 		password: config.password,
 		store: config.store,
 	};
