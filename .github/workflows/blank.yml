@@ -1,0 +1,24 @@
+name: CI
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Setup Node.js environment
+      uses: actions/setup-node@v1.4.2
+    
+    - name: Checkout to the repository
+      uses: actions/checkout@v2
+
+    - name: Install dependencies
+      run: npm install
+    
+    - name: Lint
+      run: npm run lint
