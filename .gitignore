@@ -1,0 +1,11 @@
+# Parcel bundler cache
+.cache/
+
+# Contains build
+dist/
+
+# Dependencies
+node_modules/
+
+# App config
+config.json

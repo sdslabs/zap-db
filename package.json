@@ -1,0 +1,37 @@
+{
+	"name": "bot-db",
+	"version": "1.0.0",
+	"description": "Secure JSON database",
+	"main": "src/index.ts",
+	"scripts": {
+		"watch": "node ./scripts/watch.js",
+		"start": "node ./scripts/start.js",
+		"lint": "eslint scripts/**/* src/**/*",
+		"format": "eslint --fix scripts/**/* src/**/*",
+		"random": "node ./scripts/random.js",
+		"hash": "node ./scripts/hash.js",
+		"test": "npm run lint"
+	},
+	"keywords": [
+		"json",
+		"database",
+		"server"
+	],
+	"author": "",
+	"license": "ISC",
+	"devDependencies": {
+		"@types/express": "^4.17.6",
+		"@types/node": "^13.13.5",
+		"@typescript-eslint/eslint-plugin": "^2.31.0",
+		"@typescript-eslint/parser": "^2.31.0",
+		"eslint": "^6.8.0",
+		"parcel-bundler": "^1.12.4",
+		"typescript": "^3.8.3"
+	},
+	"dependencies": {
+		"body-parser": "^1.19.0",
+		"cors": "^2.8.5",
+		"express": "^4.17.1",
+		"morgan": "^1.10.0"
+	}
+}

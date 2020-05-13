@@ -1,0 +1,6 @@
+{
+    "debug": false,
+    "port": 3000,
+    "secret": "<a very random secret token here>",
+    "password": "<sha256 of admin password>"
+}
