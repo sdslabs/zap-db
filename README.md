@@ -1,7 +1,4 @@
-# bot-db
-
-> This name can be changed later on, just wanted to push the
-> code for now.
+# zap-db
 
 ## Concept
 
