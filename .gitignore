@@ -1,6 +1,3 @@
-# Parcel bundler cache
-.cache/
-
 # Contains build
 dist/
 
