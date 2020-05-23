@@ -8,10 +8,10 @@ import { Session } from "./lib/session";
  */
 const main = () => {
 	const conf = config();
-	new Store(conf.store);
+	const store = new Store(conf.store);
 	const session = new Session(conf.session);
 
-	app(session).listen(conf.port, () => {
+	app(session, store).listen(conf.port, () => {
 		console.log(`Server started at http://0.0.0.0:${conf.port}`);
 	});
 };
