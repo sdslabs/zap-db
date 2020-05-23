@@ -1,7 +1,8 @@
-import express from "express";
-import { Session } from "./lib/session";
-import { Store } from "./lib/store";
+import crypto from "crypto";
 import config from "./config";
+import express from "express";
+import { Store } from "./lib/store";
+import { Session } from "./lib/session";
 
 const conf = config();
 
@@ -31,7 +32,7 @@ export const validateToken = (session: Session, store: Store): express.RequestHa
 				else throw "insufficient scopes";
 			}
 		}
-		else throw "wrong token type";
+		else throw "incorrect token type";
 	};
 };
 
@@ -40,13 +41,13 @@ export const validateToken = (session: Session, store: Store): express.RequestHa
  * Middleware to validate token for incoming request from admin
  */
 export const validateAdminToken = (): express.RequestHandler => {
-	return (req: express.Request, res: express.Response, next: express.NextFunction): void => {
+	return (req: express.Request, _res: express.Response, next: express.NextFunction): void => {
 		const authHeader = req.headers.authorization.split(" ");
-		if (authHeader[0] === "Bearer") {
-			const tkn = req.headers.authorization.split(" ")[1];
-			if(tkn === conf.password) next(); 
-			else throw "incorrect admin password";
+		if (authHeader[0] === "Basic") {
+			const pwdObj = Buffer.from(authHeader[1], "base64").toString("ascii").split(":");
+			if (pwdObj[0] === "admin" && crypto.createHash("sha256").update(pwdObj[1]).digest("hex") === conf.password) next();
+			else throw "wrong user or password";
 		}
-		else throw "wrong token type";
+		else throw "incorrect token type";
 	};
 };

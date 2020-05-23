@@ -60,10 +60,9 @@ export class Store {
 
 	/**
 	 * Returns a database instance.
-	 * @param store Store containing the database
 	 * @param name Name of the database
 	 */
-	public getDB(name: string) {
+	public getDB(name: string): Database {
 		return new Database(this, name);
 	}
 }
