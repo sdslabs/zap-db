@@ -9,9 +9,9 @@ import { Session } from "./lib/session";
 const main = () => {
 	const conf = config();
 	new Store(conf.store);
-	new Session(conf.session);
+	const session = new Session(conf.session);
 
-	app().listen(conf.port, () => {
+	app(session).listen(conf.port, () => {
 		console.log(`Server started at http://0.0.0.0:${conf.port}`);
 	});
 };

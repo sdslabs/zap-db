@@ -4,13 +4,14 @@ import bodyparser from "body-parser";
 import cors from "cors";
 import config from "./config";
 import { ValidateToken, ValidateAdminToken } from "./middlewares";
+import { Session } from "./lib/session";
 
 /**
  * Registers routes to the app instance
  * @param app Express application
  */
-const registerRoutes = (app: express.Express): void => {
-	app.get("/", ValidateToken, (_req, res) => {
+const registerRoutes = (app: express.Express, session: Session): void => {
+	app.get("/", ValidateToken(session), (_req, res) => {
 		res.status(200).json({ message: "hello world" });
 	});
 	app.get("/admin", ValidateAdminToken, (_req, res) => {
@@ -21,7 +22,7 @@ const registerRoutes = (app: express.Express): void => {
 /**
  * Creates new express app to start the server
  */
-export default (): express.Express => {
+export default (session: Session): express.Express => {
 	const app = express();
 	const conf = config();
 
@@ -35,7 +36,7 @@ export default (): express.Express => {
 	app.use(bodyparser.urlencoded({ extended: true }));
 	app.use(cors());
 
-	registerRoutes(app);
+	registerRoutes(app, session);
 
 	return app;
 };
