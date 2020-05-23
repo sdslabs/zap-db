@@ -57,6 +57,15 @@ export class Store {
 			adapter.defaults({}).write();
 		});
 	}
+
+	/**
+	 * Returns a database instance.
+	 * @param store Store containing the database
+	 * @param name Name of the database
+	 */
+	public getDB(name: string) {
+		return new Database(this, name);
+	}
 }
 
 /**
