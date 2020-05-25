@@ -84,4 +84,4 @@
 
 1. Run `npm run format` to format auto-fixable errors.
 
-1. Run `npm lint` to check for linting errors.
+1. Run `npm run lint` to check for linting errors.
