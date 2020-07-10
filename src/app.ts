@@ -6,19 +6,28 @@ import config from "./config";
 import { validateToken, validateAdminToken } from "./middlewares";
 import { Session } from "./lib/session";
 import { Store } from "./lib/store";
-
+import * as controller from "./controllers";
 /**
  * Registers routes to the app instance
  * @param app Express application
  */
 const registerRoutes = (app: express.Express, session: Session, store: Store): void => {
-	app.get("/", validateToken(session, store), (_req, res) => {
-		res.status(200).json({ message: "hello world" });
-	});
+	app.get("/", validateToken(session, store), controller.getDB(store)); 
+
+	app.get("/:id", validateToken(session, store), controller.getEntry(store)); 
+	
 	app.get("/admin", validateAdminToken(), (_req, res) => {
+		//session.addToken({ database: "test", scopes: ["owner"] });
+		session.addToken({database: "test", scopes: ["read", "write", "delete"]});
 		res.status(200).json({ message: "something" });
 	});
-};
+	
+	app.post("/", validateToken(session, store), controller.writeIntoDB(store));
+
+	app.patch("/:id", validateToken(session, store), controller.updateEntry(store));
+
+	//app.delete("/", validateToken(session, store), controller.deleteEntry(store));
+}; 
 
 /**
  * Creates new express app to start the server
