@@ -12,21 +12,25 @@ import * as controller from "./controllers";
  * @param app Express application
  */
 const registerRoutes = (app: express.Express, session: Session, store: Store): void => {
-	app.get("/", validateToken(session, store), controller.getDB(store)); 
+	app.get("/", validateToken(session, store), controller.getEntry()); 
 
-	app.get("/:id", validateToken(session, store), controller.getEntry(store)); 
+	app.get("/:key", validateToken(session, store), controller.getEntry()); 
+
+	app.post("/", validateToken(session, store), controller.writeIntoDB());
+
+	app.patch("/", validateToken(session, store), controller.updateEntry());
+
+	app.delete("/", validateToken(session, store), controller.deleteEntry());
 	
+	// Admin Routes
 	app.get("/admin", validateAdminToken(), (_req, res) => {
 		//session.addToken({ database: "test", scopes: ["owner"] });
 		session.addToken({database: "test", scopes: ["read", "write", "delete"]});
 		res.status(200).json({ message: "something" });
 	});
+
+	app.post("/admin", validateToken(session, store), controller.addToken(session));	
 	
-	app.post("/", validateToken(session, store), controller.writeIntoDB(store));
-
-	app.patch("/:id", validateToken(session, store), controller.updateEntry(store));
-
-	//app.delete("/", validateToken(session, store), controller.deleteEntry(store));
 }; 
 
 /**
