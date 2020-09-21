@@ -58,6 +58,13 @@ export class Store {
 		});
 	}
 
+	public deleteDB(name: string) {
+		fs.unlink(`${this.path}/${name}.json`, (err) => {
+			if(err) throw err;
+			console.log("Database deleted");
+		});
+	}
+
 	/**
 	 * Returns a database instance.
 	 * @param name Name of the database
@@ -133,5 +140,9 @@ export class Database {
 	 */
 	public update(key: string, object: any) {
 		this.adapter.set(key, object).write();
+	}
+
+	public delete(key: string) {
+		this.adapter.unset(key).write();
 	}
 }

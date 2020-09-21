@@ -12,24 +12,40 @@ import * as controller from "./controllers";
  * @param app Express application
  */
 const registerRoutes = (app: express.Express, session: Session, store: Store): void => {
+
+	//Admin Routes
+
+	//Ouputs token details
+	app.get("/admin", validateAdminToken(), controller.getTokens(session));
+
+	//Creates a new database and outputs a new owner token
+	app.post("/admin", validateAdminToken(), controller.addToken(session, store));	
+
+	//Updates a token's scopes
+	app.patch("/admin", validateAdminToken(), controller.updateToken(session));
+
+	//Revokes a token
+	app.delete("/admin", validateAdminToken(), controller.revokeToken(session));
+
+	//Deletes the entire database
+	app.delete("/", validateAdminToken(), controller.deleteDB(store));
+
+	//Gets a particular entry from a database
+	app.get("/:key", validateToken(session, store), controller.getEntry());
+	
+	//Gets the entire database
 	app.get("/", validateToken(session, store), controller.getEntry()); 
 
-	app.get("/:key", validateToken(session, store), controller.getEntry()); 
+	//Creates an entry in a database
+	app.post("/", validateToken(session, store), controller.createEntry());
 
-	app.post("/", validateToken(session, store), controller.writeIntoDB());
-
+	//Updates an entry in the database
 	app.patch("/", validateToken(session, store), controller.updateEntry());
 
-	app.delete("/", validateToken(session, store), controller.deleteEntry());
-	
-	// Admin Routes
-	app.get("/admin", validateAdminToken(), (_req, res) => {
-		//session.addToken({ database: "test", scopes: ["owner"] });
-		session.addToken({database: "test", scopes: ["read", "write", "delete"]});
-		res.status(200).json({ message: "something" });
-	});
+	//Deletes a particular entry in a database
+	app.delete("/:key", validateToken(session, store), controller.deleteEntry());
 
-	app.post("/admin", validateToken(session, store), controller.addToken(session));	
+
 	
 }; 
 

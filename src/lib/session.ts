@@ -33,11 +33,11 @@ interface TokenMap {
 }
 
 interface TokenDataMap {
-	[key: string]: TokenData,
+	[key: string]: TokenData, 
 }
 
 /**
- * Session class handles the interface with tokens and thier management
+ * Session class handles the interface with tokens and their management
 */
 export class Session {
 	private map: TokenMap;
@@ -139,5 +139,16 @@ export class Session {
 	public revokeToken(token: string): void {
 		delete this.map[token];
 		this.writeMapToPath();
+	}
+
+	public updateToken(data: TokenData, token: string) : void {
+		this.map[token] = this.tokenFromData(data);
+		console.log(this.map[token]);
+		this.writeMapToPath();
+		
+	}
+
+	public getTokens(): TokenMap {
+		return this.map;
 	}
 }
