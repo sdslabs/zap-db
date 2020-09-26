@@ -43,35 +43,57 @@ export const getTokens = (session: Session): express.RequestHandler => {
 
 export const addToken = (session: Session, store: Store): express.RequestHandler => {
         return (req: express.Request, res: express.Response): void => {
-                const database: string = req.body.database;
-                const data: any = {
-                        "database": database,
-                        "scopes": ["owner"]
-                };
-                store.createDB(database);
-                session.addToken(data);
-                res.status(200).json({ message: "token generated"});
+                
+                if(res.locals.scope === "owner"){
+                        if(req.body.scopes!= "owner"){
+                                session.addToken(req.body, res.locals.scope);
+                                res.status(200).json({ message: "token generated"});
+                        }
+                        else throw "There can be only one owner token";
+                }
+                else throw "insufficient scope";
+                
         };
 };
 
 export const revokeToken = (session: Session): express.RequestHandler => {
         return (req: express.Request, res: express.Response): void => {
-
-                session.revokeToken(req.body["token"]);
-                res.json({ message: "token revoked"}).status(200);
+                if(res.locals.scope === "owner") {
+                        session.revokeToken(req.body["token"], 0);
+                        res.json({ message: "token revoked"}).status(200);
+                }
         };
 };
 
 export const updateToken = (session: Session): express.RequestHandler => {
         return (req: express.Request, res: express.Response): void => {
-                session.updateToken(req.body.data, req.body.token);
-                res.json({ message : "token updated" }).status(200);
+                if(res.locals.scope === "owner"){
+                        session.updateToken(req.body.data, req.body.token);
+                        res.json({ message : "token updated" }).status(200);
+                }
         };
 };
 
-export const deleteDB = (store: Store): express.RequestHandler => {
+export const createDB = (session: Session, store: Store): express.RequestHandler => {
         return (req: express.Request, res: express.Response): void => {
-                store.deleteDB(req.body.database);
+                const database: string = req.body.database;
+                const data: any = {
+                        "database": database,
+                        "scopes": ["owner"]
+                };  
+                store.createDB(database);
+                session.addToken(data);
+                res.status(200).json({ message: "Database generated"});
+        };
+};
+
+export const deleteDB = (store: Store, session: Session): express.RequestHandler => {
+        return (req: express.Request, res: express.Response): void => {
+                
+                //store.deleteDB(req.body["database"]);
+                session.revokeToken(req.body["database"]);
+                
+                
                 res.json({message: "Database deleted"}).status(200);
         };
 };

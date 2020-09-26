@@ -28,6 +28,8 @@ export const validateToken = (session: Session, store: Store): express.RequestHa
 				const token = session.getToken(tkn);
 				if(token.scopes.filter(scope => scope === "owner").length > 0) { 
 					res.locals.database = store.getDB(token.database);
+					res.locals.scope = "owner";
+
 					next();
 				}
 				else {

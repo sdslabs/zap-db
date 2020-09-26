@@ -129,16 +129,44 @@ export class Session {
 	 * Adds new token to the database.
 	 * @param data Information related to the database.
 	 */
-	public addToken(data: TokenData): string {
-		const token: string = Session.generateToken();
-		this.map[token] = this.tokenFromData(data);
-		this.writeMapToPath();
-		return token;
+	public addToken(data: TokenData, checkOwner?: string): string {
+		if(checkOwner === "owner"){
+			const token: string = Session.generateToken();
+			this.map[token] = this.tokenFromData(data);
+			this.writeMapToPath();
+			return token;
+		}
+		
 	}
 
-	public revokeToken(token: string): void {
-		delete this.map[token];
+	public revokeToken(data: string, check?: any): void {
+		if(check===1){
+			delete this.map[data];
+		}
+		else{
+			//Stores session.json into an temp object to extract the token (keys of the object)
+			let temp: Object = this.tokenFromDatabase();
+			let x: string[] = Object.keys(temp);
+			for(let a of x){
+				if(this.map[a]["database"] == undefined)
+				{throw "database does not exist";}
+
+				if(this.map[a]["database"] === data){
+					delete this.map[a];
+				}
+				
+				
+			}
+		}
 		this.writeMapToPath();
+	}
+
+	//Extracts all the tokens related to a database
+	public tokenFromDatabase(): Object{
+		return JSON.parse(fs.readFileSync(this.path, {
+			encoding: "utf8",
+			flag: "r"
+		}));
 	}
 
 	public updateToken(data: TokenData, token: string) : void {

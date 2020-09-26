@@ -19,16 +19,16 @@ const registerRoutes = (app: express.Express, session: Session, store: Store): v
 	app.get("/admin", validateAdminToken(), controller.getTokens(session));
 
 	//Creates a new database and outputs a new owner token
-	app.post("/admin", validateAdminToken(), controller.addToken(session, store));	
+	app.post("/admin", validateAdminToken(), controller.createDB(session, store)); 
 
 	//Updates a token's scopes
-	app.patch("/admin", validateAdminToken(), controller.updateToken(session));
+	app.patch("/admin", validateToken(session, store), controller.updateToken(session));
 
 	//Revokes a token
-	app.delete("/admin", validateAdminToken(), controller.revokeToken(session));
+	app.delete("/admin", validateToken(session, store), controller.revokeToken(session));
 
 	//Deletes the entire database
-	app.delete("/", validateAdminToken(), controller.deleteDB(store));
+	app.delete("/", validateAdminToken(), controller.deleteDB(store, session)); 
 
 	//Gets a particular entry from a database
 	app.get("/:key", validateToken(session, store), controller.getEntry());
@@ -36,6 +36,9 @@ const registerRoutes = (app: express.Express, session: Session, store: Store): v
 	//Gets the entire database
 	app.get("/", validateToken(session, store), controller.getEntry()); 
 
+	//Creates a token
+	app.post("/createToken", validateToken(session, store), controller.addToken(session, store)); 
+	
 	//Creates an entry in a database
 	app.post("/", validateToken(session, store), controller.createEntry());
 
@@ -44,7 +47,6 @@ const registerRoutes = (app: express.Express, session: Session, store: Store): v
 
 	//Deletes a particular entry in a database
 	app.delete("/:key", validateToken(session, store), controller.deleteEntry());
-
 
 	
 }; 

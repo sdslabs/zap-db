@@ -6,3 +6,6 @@ node_modules/
 
 # App config
 config.json
+
+# Directory where Databases are stored
+store
