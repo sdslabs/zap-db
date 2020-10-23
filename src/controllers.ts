@@ -46,7 +46,7 @@ export const addToken = (session: Session, store: Store): express.RequestHandler
                 
 		if(res.locals.scope === "owner"){
 			if(req.body.scopes!= "owner"){
-				session.addToken(req.body, res.locals.scope);
+				session.addToken(req.body);
 				res.status(200).json({ message: "token generated"});
 			}
 			else throw "There can be only one owner token";
@@ -82,7 +82,7 @@ export const createDB = (session: Session, store: Store): express.RequestHandler
 			"scopes": ["owner"]
 		};  
 		store.createDB(database);
-		const token: string = session.addToken(data, "owner");
+		const token: string = session.addToken(data);
 		res.status(200).json({ message: "Database generated", token: token });
 	};
 };
