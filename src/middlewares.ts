@@ -22,25 +22,25 @@ export const validateToken = (session: Session, store: Store): express.RequestHa
 		if(req.headers.authorization === undefined )
 		{ throw "invalid authorization: no authorization header found";}
 
-			const authHeader = req.headers.authorization.split(" ");
-			if (authHeader[0] === "Bearer") {
-				const tkn = authHeader[1];
-				const token = session.getToken(tkn);
-				if(token.scopes.filter(scope => scope === "owner").length > 0) { 
-					res.locals.database = store.getDB(token.database);
-					res.locals.scope = "owner";
+		const authHeader = req.headers.authorization.split(" ");
+		if (authHeader[0] === "Bearer") {
+			const tkn = authHeader[1];
+			const token = session.getToken(tkn);
+			if(token.scopes.filter(scope => scope === "owner").length > 0) { 
+				res.locals.database = store.getDB(token.database);
+				res.locals.scope = "owner";
 
+				next();
+			}
+			else {
+				if(token.scopes.filter(scope => scope === mapMethodToScope[req.method]).length > 0) {
+					res.locals.database = store.getDB(token.database);
 					next();
 				}
-				else {
-					if(token.scopes.filter(scope => scope === mapMethodToScope[req.method]).length > 0) {
-						res.locals.database = store.getDB(token.database);
-						next();
-					}
-					else throw "insufficient scopes";
-				}
+				else throw "insufficient scopes";
 			}
-			else throw "incorrect token type";
+		}
+		else throw "incorrect token type";
 		
 	};
 };

@@ -129,14 +129,11 @@ export class Session {
 	 * Adds new token to the database.
 	 * @param data Information related to the database.
 	 */
-	public addToken(data: TokenData, checkOwner?: string): string {
-		if(checkOwner === "owner"){
-			const token: string = Session.generateToken();
-			this.map[token] = this.tokenFromData(data);
-			this.writeMapToPath();
-			return token;
-		}
-		
+	public addToken(data: TokenData): string {
+		const token: string = Session.generateToken();
+		this.map[token] = this.tokenFromData(data);
+		this.writeMapToPath();
+		return token;
 	}
 
 	public revokeToken(data: string, check?: any): void {
