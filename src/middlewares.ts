@@ -2,15 +2,15 @@ import crypto from "crypto";
 import config from "./config";
 import express from "express";
 import { Store } from "./lib/store";
-import { Session } from "./lib/session";
+import { Session, Scopes } from "./lib/session";
 
 const conf = config();
 
 const mapMethodToScope: {[key: string]: string} = {
-	"GET": "read",
-	"POST": "write",
-	"PATCH": "write",
-	"DELETE": "delete",
+	"GET": Scopes.Read,
+	"POST": Scopes.Write,
+	"PATCH": Scopes.Write,
+	"DELETE": Scopes.Delete,
 };
 
 /**
@@ -26,10 +26,9 @@ export const validateToken = (session: Session, store: Store): express.RequestHa
 		if (authHeader[0] === "Bearer") {
 			const tkn = authHeader[1];
 			const token = session.getToken(tkn);
-			if(token.scopes.filter(scope => scope === "owner").length > 0) { 
+			res.locals.token = token;
+			if(token.scopes.filter(scope => scope === Scopes.Owner).length > 0) { 
 				res.locals.database = store.getDB(token.database);
-				res.locals.scope = "owner";
-
 				next();
 			}
 			else {
@@ -51,6 +50,9 @@ export const validateToken = (session: Session, store: Store): express.RequestHa
  */
 export const validateAdminToken = (): express.RequestHandler => {
 	return (req: express.Request, _res: express.Response, next: express.NextFunction): void => {
+		if(req.headers.authorization === undefined )
+		{ throw "invalid authorization: no authorization header found";}
+
 		const authHeader = req.headers.authorization.split(" ");
 		if (authHeader[0] === "Basic") {
 			const pwdObj = Buffer.from(authHeader[1], "base64").toString("ascii").split(":");

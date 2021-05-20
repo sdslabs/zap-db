@@ -23,7 +23,7 @@ export interface Token {
  * TokenData is the interface of the data that can be used by
  * JSONs to create a Token from.
  */
-interface TokenData {
+export interface TokenData {
 	database: string,
 	scopes: string[],
 }
@@ -136,43 +136,45 @@ export class Session {
 		return token;
 	}
 
-	public revokeToken(data: string, check?: any): void {
-		if(check===1){
-			delete this.map[data];
-		}
-		else{
-			//Stores session.json into an temp object to extract the token (keys of the object)
-			let temp: Object = this.tokenFromDatabase();
-			let x: string[] = Object.keys(temp);
-			for(let a of x){
-				if(this.map[a]["database"] == undefined)
-				{throw "database does not exist";}
-
-				if(this.map[a]["database"] === data){
-					delete this.map[a];
-				}
-				
-				
-			}
-		}
+	/**
+	 * Deletes token from the session.
+	 * @param token Token to be revoked.
+	 */
+	public revokeToken(token: string): void {
+		delete this.map[token];
 		this.writeMapToPath();
 	}
 
-	//Extracts all the tokens related to a database
-	public tokenFromDatabase(): Object{
-		return JSON.parse(fs.readFileSync(this.path, {
+	/**
+	 * Extracts all the tokens related to a database
+	 * @param database Database name to fetch tokens for
+	 */
+	public tokensFromDatabase(database: string): string[]{
+		const allTokens: any =  JSON.parse(fs.readFileSync(this.path, {
 			encoding: "utf8",
 			flag: "r"
 		}));
+		let tokens: string[] = [];
+		for (let token in allTokens) {
+			if (allTokens[token].database === database) tokens.push(token);
+		}
+		return tokens;
 	}
 
-	public updateToken(data: TokenData, token: string) : void {
-		this.map[token] = this.tokenFromData(data);
-		console.log(this.map[token]);
+	/**
+	 * Updates token related to a database
+	 * @param token Token for a database
+	 * @param scopes New scopes for the token
+	 */
+	public updateToken(token: string, scopes: string[]) : void {
+		let tokenData: Token = this.getToken(token);
+		tokenData.scopes = scopes as Scopes[];
+		this.map[token] = this.tokenFromData(tokenData);
 		this.writeMapToPath();
 		
 	}
 
+	// Returns all tokens
 	public getTokens(): TokenMap {
 		return this.map;
 	}
