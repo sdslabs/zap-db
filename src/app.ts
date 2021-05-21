@@ -17,13 +17,13 @@ const registerRoutes = (app: express.Express, session: Session, store: Store): v
 	//Admin Routes
 
 	//Ouputs token details
-	app.get("/admin", validateAdminToken(), controller.getTokens(session));
+	app.get("/admin/getTokens", validateAdminToken(), controller.getTokens(session));
 
 	//Creates a new database and outputs a new owner token
-	app.post("/admin", validateAdminToken(), controller.createDB(session, store)); 
+	app.post("/admin/createDB", validateAdminToken(), controller.createDB(session, store)); 
 
 	//Deletes the entire database
-	app.delete("/admin", validateAdminToken(), controller.deleteDB(session, store)); 
+	app.delete("/admin/deleteDB", validateAdminToken(), controller.deleteDB(session, store)); 
 
 	//Gets the entire database
 	app.get("/", validateToken(session, store), controller.getEntry());
