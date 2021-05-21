@@ -1,5 +1,5 @@
 {
-	"name": "bot-db",
+	"name": "zap-db",
 	"version": "1.0.0",
 	"description": "Secure JSON database",
 	"main": "src/index.ts",
