@@ -1,0 +1,37 @@
+Third-party software licenses
+=============================
+
+zap-db embeds third-party free and open source software packages under various
+licenses including permissive, limited copyleft and copyleft licenses.
+
+THE FOLLOWING SETS FORTH ATTRIBUTION NOTICES FOR THIRD PARTY SOFTWARE THAT MAY
+BE CONTAINED IN PORTIONS OF THE ZAP-DB PRODUCT:
+
+- @types/cors
+- @types/express
+- @types/lowdb
+- @types/morgan
+- @types/node
+- cors
+- express
+- lowdb
+- morgan
+- @typescript-eslint/eslint-plugin
+- @typescript-eslint/parser
+- concurrently
+- eslint
+- nodemon
+- typescript
+
+A copy of the source code maybe downloaded from:
+- https://github.com/expressjs/body-parser (body-parser)
+- https://github.com/expressjs/cors (cors)
+- https://github.com/expressjs/express (express)
+- https://github.com/typicode/lowdb (lowdb)
+- https://github.com/expressjs/morgan (morgan)
+- https://github.com/DefinitelyTyped/DefinitelyTyped (@types/cors, @types/express, @types/lowdb, @types/morgan)
+- https://github.com/typescript-eslint/typescript-eslint (@typescript-eslint/eslint-plugin, @typescript-eslint/parser)
+- https://github.com/kimmobrunfeldt/concurrently (concurrently)
+- https://github.com/eslint/eslint (eslint)
+- https://github.com/remy/nodemon (nodemon)
+- https://github.com/Microsoft/TypeScript (typescript)

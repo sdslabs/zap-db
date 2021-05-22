@@ -1,5 +1,7 @@
 # zap-db
 
+[![CI](https://github.com/sdslabs/zap-db/actions/workflows/ci.yml/badge.svg)](https://github.com/sdslabs/zap-db/actions/workflows/ci.yml)
+
 ## Concept
 
 1. There's an admin for the database server, only who can
@@ -62,10 +64,6 @@
    $ cp sample.config.json config.json
    ```
 
-1. To generate a random key for secret, use:
-   ```shell
-   $ npm run random
-   ```
 
 1. Password in config is the sha256 of the password you want
    to keep for the admin. Use the following command to hash:
