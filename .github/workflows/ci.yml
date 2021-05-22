@@ -12,7 +12,7 @@ jobs:
 
     steps:
       - name: Setup Node.js environment
-        uses: actions/setup-node@v1.4.2
+        uses: actions/setup-node@v2
 
       - name: Checkout to the repository
         uses: actions/checkout@v2
@@ -31,7 +31,7 @@ jobs:
 
     steps:
       - name: Setup Node.js environment
-        uses: actions/setup-node@v1.4.2
+        uses: actions/setup-node@v2
 
       - name: Checkout to the repository
         uses: actions/checkout@v2
