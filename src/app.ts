@@ -17,13 +17,13 @@ const registerRoutes = (app: express.Express, session: Session, store: Store): v
 	//Admin Routes
 
 	//Ouputs token details
-	app.get("/admin/getTokens", validateAdminToken(), controller.getTokens(session));
+	app.get("/admin/token", validateAdminToken(), controller.getTokens(session));
 
 	//Creates a new database and outputs a new owner token
-	app.post("/admin/createDB", validateAdminToken(), controller.createDB(session, store)); 
+	app.post("/admin/database/create", validateAdminToken(), controller.createDB(session, store)); 
 
 	//Deletes the entire database
-	app.delete("/admin/deleteDB", validateAdminToken(), controller.deleteDB(session, store)); 
+	app.delete("/admin/database", validateAdminToken(), controller.deleteDB(session, store)); 
 
 	//Gets the entire database
 	app.get("/", validateToken(session, store), controller.getEntry());
@@ -35,19 +35,19 @@ const registerRoutes = (app: express.Express, session: Session, store: Store): v
 	app.patch("/", validateToken(session, store), controller.updateEntry()); 
 
 	//Gets a particular entry from a database
-	app.get("/:key", validateToken(session, store), controller.getEntry());
+	app.get("/json/:key", validateToken(session, store), controller.getEntry());
 
 	//Deletes a particular entry in a database
-	app.delete("/:key", validateToken(session, store), controller.deleteEntry());
+	app.delete("/json/:key", validateToken(session, store), controller.deleteEntry());
 
 	//Creates a token
-	app.post("/token/createToken", validateToken(session, store), controller.addToken(session)); 
+	app.post("/token/create", validateToken(session, store), controller.addToken(session)); 
 
 	//Updates a token's scopes
-	app.patch("/token/updateToken", validateToken(session, store), controller.updateToken(session));
+	app.patch("/token/update", validateToken(session, store), controller.updateToken(session));
 
 	//Revokes a token
-	app.delete("/token/revokeToken", validateToken(session, store), controller.revokeToken(session));
+	app.delete("/token/revoke", validateToken(session, store), controller.revokeToken(session));
 }; 
 
 /**
