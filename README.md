@@ -2,11 +2,7 @@
 
 An easy to use JSON database written with ease of setup and memory management of slack bots in mind.
 
-[![CI](https://github.com/sdslabs/zap-db/actions/workflows/ci.yml/badge.svg)](https://github.com/sdslabs/zap-db/actions/workflows/ci.yml)
-
-[![MIT License](https://img.shields.io/apm/l/atomic-design-ui.svg?)](https://github.com/tterb/atomic-design-ui/blob/master/LICENSEs)
-
-[![Discord](https://discordapp.com/api/guilds/758961084337618944/embed.png)](https://discord.gg/dXkVEgTPu9)
+[![CI](https://github.com/sdslabs/zap-db/actions/workflows/ci.yml/badge.svg)](https://github.com/sdslabs/zap-db/actions/workflows/ci.yml)  [![MIT License](https://img.shields.io/apm/l/atomic-design-ui.svg?)](https://github.com/tterb/atomic-design-ui/blob/master/LICENSEs)  [![Discord](https://discordapp.com/api/guilds/758961084337618944/embed.png)](https://discord.gg/dXkVEgTPu9)
 
 ## Concept
 
