@@ -1,5 +1,7 @@
 # zap-db
 
+An easy to use JSON database written with ease of setup and memory management of slack bots in mind.
+
 [![CI](https://github.com/sdslabs/zap-db/actions/workflows/ci.yml/badge.svg)](https://github.com/sdslabs/zap-db/actions/workflows/ci.yml)
 
 ## Concept
