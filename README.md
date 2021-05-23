@@ -4,6 +4,10 @@ An easy to use JSON database written with ease of setup and memory management of
 
 [![CI](https://github.com/sdslabs/zap-db/actions/workflows/ci.yml/badge.svg)](https://github.com/sdslabs/zap-db/actions/workflows/ci.yml)
 
+[![MIT License](https://img.shields.io/apm/l/atomic-design-ui.svg?)](https://github.com/tterb/atomic-design-ui/blob/master/LICENSEs)
+
+[![Discord](https://discordapp.com/api/guilds/758961084337618944/embed.png)](https://discord.gg/dXkVEgTPu9)
+
 ## Concept
 
 1. There's an admin for the database server, only who can
@@ -89,6 +93,12 @@ An easy to use JSON database written with ease of setup and memory management of
 
 Postman Collection : https://www.getpostman.com/collections/9135694a2a9a2410d3ae
 
+## Got Questions?
+
+Hop in to our Discord Server if you have any questions or if you'd like to contribute to the project
+
 ## License
 
 This project is under the MIT license. See NOTICE for thirdparty license notices.
+
+
