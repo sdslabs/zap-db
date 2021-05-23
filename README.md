@@ -83,3 +83,10 @@
 1. Run `npm run format` to format auto-fixable errors.
 
 1. Run `npm run lint` to check for linting errors.
+
+
+Postman Collection : https://www.getpostman.com/collections/9135694a2a9a2410d3ae
+
+## License
+
+This project is under the MIT license. See LICENSE.md for thirdparty license notices.
