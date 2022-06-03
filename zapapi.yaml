@@ -1,0 +1,346 @@
+components:
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+    bearerAuth:
+      type: http
+      scheme: bearer
+  
+  schemas:
+    GetTokensByAdmin:
+      description: response body for get all tokens by admin
+      type: object 
+      properties:
+        token:
+          properties:
+            database:
+              type: string
+              example: test
+            scopes:
+              type: string
+              example: '["read", "write", "delete"]'
+
+    DatabaseKeyReqBody:
+      description: request body for create database by admin
+      type: object
+      properties:
+        database:
+          type: string
+          example: test1
+
+    CreateDatabaseRes:
+      description: response body for create database by admin
+      type: object
+      properties:
+        message:
+          type: string
+          example: Database Generated
+        token:
+          type: string
+          example: token
+    
+    CreateToken:
+      type: object
+      properties:
+        message:
+          type: string
+          example: token generated
+        token:
+          type: string
+          example: token
+
+    TokenReq:
+      description: request body for update token by user
+      type: object
+      properties:
+        token:
+          type: string
+          example: '{{user_token}}'
+        scopes:
+          type: string
+          example: '["write", "delete"]'
+
+    GetDatabase:
+      type: object
+      example: []
+
+    GetKey:
+      type: string
+      example: test
+
+    SuccessfulRes:
+      description: response body for a Successful request
+      type: object
+      properties:
+        message:
+          type: string
+          example: Response Successful
+      
+
+      
+
+
+openapi: 3.0.0
+info:
+  title: zap-db
+  description: An easy to use JSON database created for memory management of slack bots
+  version: 1.0.0
+
+servers:
+  - url: http://localhost:3000
+    description: Development server
+    
+paths:
+  /admin/token:
+    get:
+      operationId: getTokenByAdmin
+      summary: List all tokens
+      tags: 
+        - admin
+      security:
+        - basicAuth: []
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                "$ref": "#components/schemas/GetTokensByAdmin"          
+        default:
+          description: Unknown Error response
+                  
+  /admin/database/create:
+    post:
+      operationId: createDatabase
+      summary: Create Database
+      tags: 
+        - admin
+      security:
+        - basicAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#components/schemas/DatabaseKeyReqBody"
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                "$ref": "#components/schemas/CreateDatabaseRes" 
+        default:
+          description: Error Response
+
+  /admin/database:
+    delete:
+      operationId: deleteDatabase
+      summary: Delete database
+      tags: 
+        - admin
+      security:
+        - basicAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#components/schemas/DatabaseKeyReqBody"      
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                "$ref": "#components/schemas/SuccessfulRes"     
+        default:
+          description: Error Response
+        
+  /token/create:
+    post:
+      operationId: createToken
+      summary: Create new token for Database
+      tags:
+        - user 
+        - token
+      security:
+        - bearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#components/schemas/TokenReq"
+              required:
+              - scopes
+              
+      responses:
+        '200':
+          description: Sucessful response
+          content:
+            application/json:
+              schema:
+                "$ref": "#components/schemas/CreateToken"  
+        default:
+          description: Error Response
+
+  /token/update:
+    patch:
+      operationId: updateToken
+      summary: Update existing token for database
+      tags:
+        - user
+        - token
+      security:
+        - bearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#components/schemas/TokenReq"
+              required:
+              - scopes
+              - token
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                "$ref": "#components/schemas/SuccessfulRes"  
+        default:
+          description: Error Response
+
+  /token/revoke:
+    delete:
+      operationId: revokeToken
+      summary: Revoke an existing token for database
+      tags:
+        - user
+        - token
+      security:
+        - bearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#components/schemas/TokenReq"
+              required:
+              - token
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                "$ref": "#components/schemas/SuccessfulRes"  
+        default:
+          description: Error Response
+
+  /:
+    get:
+      operationId: getDatabase
+      summary: Get entire database
+      tags:
+        - user
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                "$ref": "#components/schemas/GetDatabase"
+                
+        'default':
+          description: Error response
+
+    post:
+      operationId: entryDatabase
+      summary: Make a database entry
+      tags:
+        - user
+      security:
+        - bearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#components/schemas/DatabaseKeyReqBody"
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                "$ref": "#components/schemas/SuccessfulRes"  
+        default:
+          description: Error response
+
+    patch:
+        operationId: updateKey
+        summary: Update a key in the database
+        tags:
+          - user
+        security:
+        - bearerAuth: []
+        requestBody:
+          content:
+            application/json:
+              schema:
+                "$ref": "#components/schemas/DatabaseKeyReqBody"
+
+        responses:
+          '200':
+            description: Successful response
+            content:
+              application/json:
+                schema:
+                  "$ref": "#components/schemas/SuccessfulRes"  
+          default:
+            description: Error response
+
+  /json/{key}:
+    get:
+      operationId: getKey
+      summary: Fetch a specific key from database
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: key
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            text/plain:
+              schema:
+                "$ref": "#components/schemas/GetKey"
+                
+
+        default:
+          description: Error response
+    
+    delete:
+      operationId: deleteKey
+      summary: Delete a specific key from database
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: key
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                "$ref": "#components/schemas/SuccessfulRes"  
+        default:
+          description: Error response
